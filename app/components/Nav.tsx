@@ -1,29 +1,69 @@
+// app/components/Nav.tsx
 "use client";
+import Link from "next/link";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
-interface NavProps {
-  onLogin: () => void;
-}
+export default function Nav() {
+  const { user, logout, setShowAuthModal } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-export default function Nav({ onLogin }: NavProps) {
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50 fade-in">
-      <div className="container-max mx-auto px-4 h-20 flex items-center justify-between">
-        {/* Logo */}
-        <div className="w-32">
-          <img src="/logo.png" alt="Summarist Logo" className="w-full h-auto" />
+    <nav className="w-full border-b bg-white/80 backdrop-blur-md fixed top-0 left-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <Link href="/" className="text-xl font-semibold text-gray-900">
+          Summarist
+        </Link>
+
+        <div className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
+          <Link href="/for-you">For You</Link>
+          <Link href="/library">Library</Link>
+          {user ? (
+            <button
+              onClick={logout}
+              className="px-4 py-2 rounded-md bg-gray-900 text-white hover:bg-gray-700"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={() => setShowAuthModal(true)}
+              className="px-4 py-2 rounded-md bg-gray-900 text-white hover:bg-gray-700"
+            >
+              Login
+            </button>
+          )}
         </div>
 
-        {/* Navigation Links */}
-        <ul className="flex gap-6 text-slate-700 font-medium">
-          <li className="cursor-pointer hover:text-green-500" onClick={onLogin}>
-            Login
-          </li>
-          <li className="hidden md:block cursor-pointer hover:text-green-500">About</li>
-          <li className="hidden md:block cursor-pointer hover:text-green-500">Contact</li>
-          <li className="hidden md:block cursor-pointer hover:text-green-500">Help</li>
-        </ul>
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden text-gray-800"
+        >
+          ☰
+        </button>
       </div>
+
+      {mobileOpen && (
+        <div className="md:hidden border-t bg-white px-4 py-3 flex flex-col gap-3 text-gray-700 font-medium">
+          <Link href="/for-you" onClick={() => setMobileOpen(false)}>For You</Link>
+          <Link href="/library" onClick={() => setMobileOpen(false)}>Library</Link>
+          {user ? (
+            <button
+              onClick={() => { logout(); setMobileOpen(false); }}
+              className="px-4 py-2 rounded-md bg-gray-900 text-white text-left"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={() => { setShowAuthModal(true); setMobileOpen(false); }}
+              className="px-4 py-2 rounded-md bg-gray-900 text-white text-left"
+            >
+              Login
+            </button>
+          )}
+        </div>
+      )}
     </nav>
   );
 }
-

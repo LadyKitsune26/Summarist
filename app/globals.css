@@ -1,52 +1,44 @@
+
 /* app/globals.css */
 
-/* import Tailwind preflight + utilities */
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
+/* import Tailwind */
+@import "tailwindcss";
 
-/* custom root variables */
-:root {
-  --page-max: 1200px;
-}
+/* root vars */
+:root { --page-max: 1200px; }
 
-/* body styles */
-html, body, #__next {
-  height: 100%;
-}
+html, body { height: 100%; }
 
 body {
-  font-family: sans-serif;
-  color: #374151; /* slate-700 equivalent */
-  background-color: #ffffff; /* white */
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #334155; /* slate-700 */
+  background: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* container helper */
-.container-max {
-  max-width: var(--page-max);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;   /* Tailwind px-4 */
-  padding-right: 1rem;
-}
+/* simple container helper */
+.container-max { max-width: var(--page-max); margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
 
-/* fade-in animation */
+/* fade-in keyframes */
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in { animation: fadeInUp 0.5s ease forwards; opacity: 0; transform: translateY(12px); }
+
+/* convenience class used above */
+.fade-in { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s forwards; }
+
+/* small helper for mobile sticky offset (nav) */
+.main-offset { padding-top: 80px; }
+
+/* globals.css */
 .fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
   opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.6s forwards;
 }
 
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.container-max {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
