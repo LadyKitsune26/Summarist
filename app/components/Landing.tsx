@@ -1,42 +1,35 @@
 "use client";
-import React from "react";
 
-type LandingProps = {
-  onPrimaryClick?: () => void;
-};
+interface LandingProps {
+  onPrimaryClick: () => void;
+}
 
 export default function Landing({ onPrimaryClick }: LandingProps) {
   return (
-    <section id="landing">
-      <div className="container">
-        <div className="row">
-          <div className="landing__wrapper">
-            <div className="landing__content">
-              <div className="landing__content__title">
-                Gain more knowledge <br className="remove--tablet" />
-                in less time
-              </div>
-              <div className="landing__content__subtitle">
-                Great summaries for busy people,
-                <br className="remove--tablet" />
-                individuals who barely have time to read,
-                <br className="remove--tablet" />
-                and even people who don’t like to read.
-              </div>
-              <button
-                className="btn home__cta--btn"
-                onClick={() => { if (onPrimaryClick) onPrimaryClick(); }}
-              >
-                Login
-              </button>
-            </div>
-
-            <figure className="landing__image--mask">
-              <img src="/landing.png" alt="landing" />
-            </figure>
-          </div>
-        </div>
+    <div className="flex flex-col lg:flex-row items-center gap-8 fade-in">
+      {/* Text */}
+      <div className="flex-1 space-y-4 text-center lg:text-left">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+          Gain more knowledge <br className="hidden md:inline" /> in less time
+        </h1>
+        <p className="text-slate-600 text-lg md:text-xl">
+          Great summaries for busy people, <br className="hidden md:inline" />
+          individuals who barely have time to read, <br className="hidden md:inline" />
+          and even people who don’t like to read.
+        </p>
+        <button
+          className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-md font-semibold transition"
+          onClick={onPrimaryClick}
+        >
+          Login
+        </button>
       </div>
-    </section>
+
+      {/* Image */}
+      <div className="flex-1 hidden lg:flex justify-end">
+        <img src="/landing.png" alt="Landing" className="max-w-md w-full h-auto" />
+      </div>
+    </div>
   );
 }
+

@@ -1,47 +1,34 @@
-"use client";
-import React from "react";
 import { AiFillFileText, AiFillBulb, AiFillAudio } from "react-icons/ai";
 
 export default function Features() {
+  const features = [
+    {
+      icon: <AiFillFileText className="w-12 h-12 text-green-500" />,
+      title: "Read or listen",
+      subtitle: "Save time by getting the core ideas from the best books.",
+    },
+    {
+      icon: <AiFillBulb className="w-12 h-12 text-green-500" />,
+      title: "Find your next read",
+      subtitle: "Explore book lists and personalized recommendations.",
+    },
+    {
+      icon: <AiFillAudio className="w-12 h-12 text-green-500" />,
+      title: "Briefcasts",
+      subtitle: "Gain valuable insights from briefcasts.",
+    },
+  ];
+
   return (
-    <section id="features">
-      <div className="container">
-        <div className="row">
-          <div className="section__title">Understand books in few minutes</div>
-
-          <div className="features__wrapper">
-            <div className="features">
-              <div className="features__icon">
-                <AiFillFileText />
-              </div>
-              <div className="features__title">Read or listen</div>
-              <div className="features__sub--title">
-                Save time by getting the core ideas from the best books.
-              </div>
-            </div>
-
-            <div className="features">
-              <div className="features__icon">
-                <AiFillBulb />
-              </div>
-              <div className="features__title">Find your next read</div>
-              <div className="features__sub--title">
-                Explore book lists and personalized recommendations.
-              </div>
-            </div>
-
-            <div className="features">
-              <div className="features__icon">
-                <AiFillAudio />
-              </div>
-              <div className="features__title">Briefcasts</div>
-              <div className="features__sub--title">
-                Gain valuable insights from briefcasts
-              </div>
-            </div>
-          </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+      {features.map((feature, idx) => (
+        <div key={idx} className="flex flex-col items-center text-center space-y-3 p-4">
+          {feature.icon}
+          <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>
+          <p className="text-slate-600">{feature.subtitle}</p>
         </div>
-      </div>
-    </section>
+      ))}
+    </div>
   );
 }
+

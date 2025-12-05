@@ -1,92 +1,50 @@
-"use client";
-import React from "react";
-
 export default function Footer() {
   return (
-    <section id="footer">
-      <div className="container">
-        <div className="row">
-          <div className="footer__top--wrapper">
-            <div className="footer__block">
-              <div className="footer__link--title">Actions</div>
-              <div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Summarist Magazine</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Cancel Subscription</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Help</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Contact us</a>
-                </div>
-              </div>
-            </div>
-
-            <div className="footer__block">
-              <div className="footer__link--title">Useful Links</div>
-              <div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Pricing</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Summarist Business</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Gift Cards</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Authors & Publishers</a>
-                </div>
-              </div>
-            </div>
-
-            <div className="footer__block">
-              <div className="footer__link--title">Company</div>
-              <div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">About</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Careers</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Partners</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Code of Conduct</a>
-                </div>
-              </div>
-            </div>
-
-            <div className="footer__block">
-              <div className="footer__link--title">Other</div>
-              <div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Sitemap</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Legal Notice</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Terms of Service</a>
-                </div>
-                <div className="footer__link--wrapper">
-                  <a className="footer__link">Privacy Policies</a>
-                </div>
-              </div>
-            </div>
+    <footer className="bg-gray-50 text-slate-700 fade-in">
+      <div className="container-max mx-auto px-4 py-12 space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-3">Actions</h4>
+            <ul className="space-y-2 text-sm">
+              <li>Summarist Magazine</li>
+              <li>Cancel Subscription</li>
+              <li>Help</li>
+              <li>Contact us</li>
+            </ul>
           </div>
-
-          <div className="footer__copyright--wrapper">
-            <div className="footer__copyright">
-              Copyright © 2023 Summarist.
-            </div>
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-3">Useful Links</h4>
+            <ul className="space-y-2 text-sm">
+              <li>Pricing</li>
+              <li>Summarist Business</li>
+              <li>Gift Cards</li>
+              <li>Authors & Publishers</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-3">Company</h4>
+            <ul className="space-y-2 text-sm">
+              <li>About</li>
+              <li>Careers</li>
+              <li>Partners</li>
+              <li>Code of Conduct</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-3">Other</h4>
+            <ul className="space-y-2 text-sm">
+              <li>Sitemap</li>
+              <li>Legal Notice</li>
+              <li>Terms of Service</li>
+              <li>Privacy Policies</li>
+            </ul>
           </div>
         </div>
+        <div className="text-center text-sm text-gray-900">
+          &copy; 2023 Summarist
+        </div>
       </div>
-    </section>
+    </footer>
   );
 }
+
