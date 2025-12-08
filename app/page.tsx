@@ -13,8 +13,11 @@ export default function HomePage() {
   const { setShowAuthModal } = useAuth();
 
   return (
-    <div className="bg-white text-slate-700 antialiased">
+    <div className="bg-gray-900 text-gray-100 antialiased">
       <main className="space-y-20 pt-24">
+        <div className="bg-blue-500 text-white p-8 text-center font-bold">
+          TAILWIND IS WORKING
+        </div>
         <section className="container-max mx-auto px-4 fade-in">
           <Landing onPrimaryClick={() => setShowAuthModal(true)} />
         </section>
