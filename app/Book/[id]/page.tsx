@@ -1,51 +1,81 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import SkeletonCard from "../../components/SkeletonCard";
 import { useAuth } from "../../context/AuthContext";
-import { useParams } from "next/navigation";
+import SkeletonCard from "../../components/SkeletonCard";
+
+type Book = {
+  id: string;
+  title: string;
+  author: string;
+  summary: string;
+  imageLink: string;
+};
 
 export default function BookPage() {
-  const params = useParams();
-  const id = params.id;
   const { user, setShowAuthModal } = useAuth();
-  const [book, setBook] = useState<any | null>(null);
+  const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
+  const params = new URLSearchParams(window.location.pathname);
+  const id = window.location.pathname.split("/").pop();
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`https://us-central1-summaristt.cloudfunctions.net/getBook?id=${id}`)
-      .then(r => r.json())
-      .then(b => { setBook(b); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [id]);
-
-  const handleRead = () => {
-    if (!user) return setShowAuthModal(true);
-    if (book.subscriptionRequired && user.email !== "guest@gmail.com") {
-      window.location.href = "/choose-plan";
-    } else {
-      window.location.href = `/player/${book.id}`;
+    if (!user) {
+      setShowAuthModal(true);
+      return;
     }
+    const fetchBook = async () => {
+      setLoading(true);
+      try {
+        const data = await fetch(
+          `https://us-central1-summaristt.cloudfunctions.net/getBook?id=${id}`
+        ).then((r) => r.json());
+        setBook(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBook();
+  }, [id, user, setShowAuthModal]);
+
+  const saveBook = () => {
+    if (!book) return;
+    const stored = JSON.parse(localStorage.getItem("library") || "[]");
+    localStorage.setItem("library", JSON.stringify([...stored, book]));
+    alert("Book saved to library!");
   };
+
+  if (!user) return null;
 
   return (
     <div className="flex pt-20">
       <Sidebar />
       <main className="flex-1 container-max mx-auto px-4 py-8">
-        {loading ? <SkeletonCard /> : book ? (
+        {loading ? (
+          <SkeletonCard />
+        ) : book ? (
           <div className="space-y-4">
             <h1 className="text-2xl font-bold">{book.title}</h1>
             <p className="text-sm text-gray-600">{book.author}</p>
+            <img
+              src={book.imageLink}
+              alt={book.title}
+              className="w-full h-64 object-cover rounded-md"
+            />
             <div className="text-slate-700 whitespace-pre-line">{book.summary}</div>
             <button
-              onClick={handleRead}
-              className="px-4 py-2 bg-gray-900 text-white rounded"
+              onClick={saveBook}
+              className="bg-gray-900 text-white py-2 px-4 rounded mt-4"
             >
-              Read / Listen
+              Save Book
             </button>
           </div>
-        ) : <p>Book not found.</p>}
+        ) : (
+          <p>Book not found.</p>
+        )}
       </main>
     </div>
   );

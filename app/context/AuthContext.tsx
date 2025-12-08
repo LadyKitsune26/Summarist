@@ -3,7 +3,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 type User = {
   email: string;
-  subscription?: "Basic" | "Premium" | "PremiumPlus"; // <-- Add this
+  subscription?: "Basic" | "Premium" | "PremiumPlus";
 };
 
 type AuthContextType = {
@@ -22,8 +22,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const login = (email: string, password: string) => {
-    // simple dummy login
-    setUser({ email, subscription: "Basic" }); 
+    setUser({ email, subscription: "Basic" });
     setShowAuthModal(false);
   };
 

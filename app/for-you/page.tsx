@@ -1,9 +1,9 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import SkeletonCard from "../components/SkeletonCard";
 import { useAuth } from "../context/AuthContext";
-import Link from "next/link";
 
 type Book = {
   id: string;
@@ -16,28 +16,37 @@ type Book = {
 
 export default function ForYouPage() {
   const { user, setShowAuthModal } = useAuth();
+
   const [selected, setSelected] = useState<Book | null>(null);
   const [recommended, setRecommended] = useState<Book[]>([]);
   const [suggested, setSuggested] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected")
-      .then(r => r.json())
-      .then(data => setSelected(data))
-      .catch(() => null);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const sel = await fetch(
+          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected"
+        ).then((r) => r.json());
+        setSelected(sel);
 
-    fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended")
-      .then(r => r.json())
-      .then(data => setRecommended(data))
-      .catch(() => null);
+        const rec = await fetch(
+          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended"
+        ).then((r) => r.json());
+        setRecommended(rec);
 
-    fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested")
-      .then(r => r.json())
-      .then(data => setSuggested(data))
-      .catch(() => null)
-      .finally(() => setLoading(false));
+        const sug = await fetch(
+          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested"
+        ).then((r) => r.json());
+        setSuggested(sug);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
   const handleClick = (book: Book) => {
@@ -45,7 +54,7 @@ export default function ForYouPage() {
     if (book.subscriptionRequired && user.email !== "guest@gmail.com") {
       window.location.href = "/choose-plan";
     } else {
-      window.location.href = `/book/${book.id}`;
+      window.location.href = `/player/${book.id}`;
     }
   };
 
@@ -55,12 +64,18 @@ export default function ForYouPage() {
       className="border rounded-lg overflow-hidden shadow hover:shadow-lg cursor-pointer"
       onClick={() => handleClick(book)}
     >
-      <img src={book.imageLink} alt={book.title} className="w-full h-48 object-cover" />
+      <img
+        src={book.imageLink}
+        alt={book.title}
+        className="w-full h-48 object-cover"
+      />
       <div className="p-4">
         <h3 className="font-semibold">{book.title}</h3>
         <p className="text-sm text-gray-600">{book.author}</p>
         {book.subscriptionRequired && (
-          <span className="inline-block mt-2 px-2 py-1 text-xs font-bold bg-yellow-300 rounded">Premium</span>
+          <span className="inline-block mt-2 px-2 py-1 text-xs font-bold bg-yellow-300 rounded">
+            Premium
+          </span>
         )}
       </div>
     </div>
@@ -75,12 +90,20 @@ export default function ForYouPage() {
 
         <h2 className="text-2xl font-bold">Recommended Books</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {loading ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />) : recommended.map(renderCard)}
+          {loading
+            ? Array(4)
+                .fill(0)
+                .map((_, i) => <SkeletonCard key={i} />)
+            : recommended.map(renderCard)}
         </div>
 
         <h2 className="text-2xl font-bold">Suggested Books</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {loading ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />) : suggested.map(renderCard)}
+          {loading
+            ? Array(4)
+                .fill(0)
+                .map((_, i) => <SkeletonCard key={i} />)
+            : suggested.map(renderCard)}
         </div>
       </main>
     </div>

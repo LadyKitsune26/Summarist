@@ -22,15 +22,13 @@ export default function LibraryPage() {
       setShowAuthModal(true);
       return;
     }
-
-    setLoading(true);
-
-    // Load from localStorage (the only actual storage your User type supports)
-    const storedBooks = localStorage.getItem("library");
-    const parsed = storedBooks ? JSON.parse(storedBooks) : [];
-
-    setLibrary(Array.isArray(parsed) ? parsed : []);
-    setLoading(false);
+    const fetchLibrary = async () => {
+      setLoading(true);
+      const storedBooks = localStorage.getItem("library");
+      if (storedBooks) setLibrary(JSON.parse(storedBooks));
+      setLoading(false);
+    };
+    fetchLibrary();
   }, [user, setShowAuthModal]);
 
   if (!user) return null;
@@ -38,21 +36,20 @@ export default function LibraryPage() {
   return (
     <div className="flex pt-20">
       <Sidebar />
-
       <main className="flex-1 container-max mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">My Library</h1>
-
         {loading ? (
           <SkeletonCard />
         ) : library.length ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {library.map((book: Book) => (
+            {library.map((book) => (
               <div
                 key={book.id}
-                className="border rounded-lg overflow-hidden shadow hover:shadow-lg"
+                className="border rounded-lg overflow-hidden shadow hover:shadow-lg cursor-pointer"
               >
                 <img
                   src={book.imageLink}
+                  alt={book.title}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
