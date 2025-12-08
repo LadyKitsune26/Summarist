@@ -1,6 +1,6 @@
-// src/components/BookCard.tsx
 "use client";
-import Link from "next/link";
+
+import React from "react";
 
 type Book = {
   id: string;
@@ -10,26 +10,31 @@ type Book = {
   subscriptionRequired?: boolean;
 };
 
-export default function BookCard({ book }: { book: Book }) {
+type BookCardProps = {
+  book: Book;
+  onClick?: (book: Book) => void;
+};
+
+export default function BookCard({ book, onClick }: BookCardProps) {
   return (
-    <Link href={`/book/${book.id}`}>
-      <div className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden cursor-pointer">
-        {/* Use object-contain instead of object-cover to show full image */}
-        <img
-          src={book.imageLink}
-          alt={book.title}
-          className="w-full h-64 object-contain bg-gray-100 p-4"
-        />
+    <div
+      className="border rounded-lg overflow-hidden shadow hover:shadow-lg cursor-pointer bg-gray-800 transition transform hover:-translate-y-1"
+      onClick={() => onClick && onClick(book)}
+    >
+      <img
+        src={book.imageLink}
+        alt={book.title}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h3 className="font-semibold text-gray-100">{book.title}</h3>
+        <p className="text-gray-400 text-sm">{book.author}</p>
         {book.subscriptionRequired && (
-          <span className="absolute top-2 right-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
+          <span className="inline-block mt-2 px-2 py-1 text-xs font-bold bg-yellow-400 rounded">
             Premium
           </span>
         )}
-        <div className="p-4">
-          <h3 className="text-lg font-semibold group-hover:text-gray-900">{book.title}</h3>
-          <p className="text-gray-500 text-sm">{book.author}</p>
-        </div>
       </div>
-    </Link>
+    </div>
   );
 }

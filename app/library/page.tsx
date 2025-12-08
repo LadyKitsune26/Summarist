@@ -1,9 +1,10 @@
 "use client";
 
-import Sidebar from "../components/Sidebar";
-import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
+import Sidebar from "../components/Sidebar";
 import SkeletonCard from "../components/SkeletonCard";
+import BookCard from "../components/BookCard";
+import { useAuth } from "../context/AuthContext";
 
 type Book = {
   id: string;
@@ -18,49 +19,34 @@ export default function LibraryPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      setShowAuthModal(true);
-      return;
-    }
-    const fetchLibrary = async () => {
-      setLoading(true);
-      const storedBooks = localStorage.getItem("library");
-      if (storedBooks) setLibrary(JSON.parse(storedBooks));
-      setLoading(false);
-    };
-    fetchLibrary();
-  }, [user, setShowAuthModal]);
+    if (!user) return;
+    setLoading(true);
+    const storedBooks = localStorage.getItem("library");
+    if (storedBooks) setLibrary(JSON.parse(storedBooks));
+    setLoading(false);
+  }, [user]);
 
-  if (!user) return null;
+  if (!user) return <div className="flex justify-center pt-20 text-gray-100">Please log in to view your library.</div>;
+
+  const handleClick = (book: Book) => {
+    window.location.href = `/player/${book.id}`;
+  };
 
   return (
     <div className="flex pt-20">
       <Sidebar />
       <main className="flex-1 container-max mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">My Library</h1>
+        <h1 className="text-2xl font-bold text-gray-100 mb-4">My Library</h1>
         {loading ? (
           <SkeletonCard />
         ) : library.length ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {library.map((book) => (
-              <div
-                key={book.id}
-                className="border rounded-lg overflow-hidden shadow hover:shadow-lg cursor-pointer"
-              >
-                <img
-                  src={book.imageLink}
-                  alt={book.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h3 className="font-semibold">{book.title}</h3>
-                  <p className="text-sm text-gray-600">{book.author}</p>
-                </div>
-              </div>
+              <BookCard key={book.id} book={book} onClick={handleClick} />
             ))}
           </div>
         ) : (
-          <p>No books in your library.</p>
+          <p className="text-gray-400">No books in your library.</p>
         )}
       </main>
     </div>

@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 
 import Landing from "./components/Landing";
@@ -15,9 +14,6 @@ export default function HomePage() {
   return (
     <div className="bg-gray-900 text-gray-100 antialiased">
       <main className="space-y-20 pt-24">
-        <div className="bg-blue-500 text-white p-8 text-center font-bold">
-          TAILWIND IS WORKING
-        </div>
         <section className="container-max mx-auto px-4 fade-in">
           <Landing onPrimaryClick={() => setShowAuthModal(true)} />
         </section>

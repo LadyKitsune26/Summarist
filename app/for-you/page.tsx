@@ -11,7 +11,7 @@ type Book = {
   author: string;
   summary: string;
   imageLink: string;
-  subscriptionRequired: boolean;
+  subscriptionRequired?: boolean;
 };
 
 export default function ForYouPage() {
@@ -23,39 +23,57 @@ export default function ForYouPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
+
     const fetchData = async () => {
-      setLoading(true);
       try {
-        const sel = await fetch(
+        // Selected book
+        const selectedRes = await fetch(
           "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected"
-        ).then((r) => r.json());
-        setSelected(sel);
+        );
+        const selectedData = await selectedRes.json();
+        setSelected({
+          ...selectedData,
+          summary: selectedData.summary ?? "",
+        });
 
-        const rec = await fetch(
+        // Recommended books
+        const recRes = await fetch(
           "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended"
-        ).then((r) => r.json());
-        setRecommended(rec);
+        );
+        const recData = await recRes.json();
+        setRecommended(
+          recData.map((b: any) => ({ ...b, summary: b.summary ?? "" }))
+        );
 
-        const sug = await fetch(
+        // Suggested books
+        const sugRes = await fetch(
           "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested"
-        ).then((r) => r.json());
-        setSuggested(sug);
-      } catch (err) {
-        console.error(err);
+        );
+        const sugData = await sugRes.json();
+        setSuggested(
+          sugData.map((b: any) => ({ ...b, summary: b.summary ?? "" }))
+        );
+      } catch (error) {
+        console.error("Error loading books", error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
-  const handleClick = (book: Book) => {
-    if (!user) return setShowAuthModal(true);
+  const handleClick = (book: Book): void => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
     if (book.subscriptionRequired && user.email !== "guest@gmail.com") {
       window.location.href = "/choose-plan";
-    } else {
-      window.location.href = `/player/${book.id}`;
+      return;
     }
+    window.location.href = `/player/${book.id}`;
   };
 
   const renderCard = (book: Book) => (
@@ -84,6 +102,7 @@ export default function ForYouPage() {
   return (
     <div className="flex pt-20">
       <Sidebar />
+
       <main className="flex-1 container-max mx-auto px-4 py-8 space-y-8">
         <h1 className="text-2xl font-bold">Selected Book</h1>
         {loading ? <SkeletonCard /> : selected && renderCard(selected)}
