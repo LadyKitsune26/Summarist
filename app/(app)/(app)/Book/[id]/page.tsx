@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Sidebar from "../../components/Sidebar";
-import { useAuth } from "../../context/AuthContext";
-import SkeletonCard from "../../components/SkeletonCard";
+import Sidebar from "../../../../components/Sidebar";
+import { useAuth } from "../../../../context/AuthContext";
+import SkeletonCard from "../../../../components/SkeletonCard";
 
 type Book = {
   id: string;
