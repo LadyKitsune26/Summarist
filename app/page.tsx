@@ -12,13 +12,23 @@ export default function HomePage() {
   const { setShowAuthModal } = useAuth();
 
   return (
-    <div className="bg-gray-50 text-gray-900">
-      <main className="pt-24 space-y-24">
-        <Landing onPrimaryClick={() => setShowAuthModal(true)} />
-        <Features />
-        <Statistics />
-        <Reviews />
-        <Numbers />
+    <div className="bg-gray-900 text-gray-100 antialiased">
+      <main className="space-y-20 pt-24">
+        <section className="container-max mx-auto px-4 fade-in">
+          <Landing onPrimaryClick={() => setShowAuthModal(true)} />
+        </section>
+        <section className="container-max mx-auto px-4 fade-in">
+          <Features />
+        </section>
+        <section className="container-max mx-auto px-4 fade-in">
+          <Statistics />
+        </section>
+        <section className="container-max mx-auto px-4 fade-in">
+          <Reviews />
+        </section>
+        <section className="container-max mx-auto px-4 fade-in">
+          <Numbers />
+        </section>
       </main>
       <Footer />
     </div>

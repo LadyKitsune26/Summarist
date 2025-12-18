@@ -1,41 +1,43 @@
 "use client";
-import { createContext, useContext, useState, ReactNode } from "react";
 
-type User = {
-  email: string;
-  subscription?: "Basic" | "Premium" | "PremiumPlus";
-};
+import { createContext, useContext, ReactNode, useState } from "react";
 
-type AuthContextType = {
-  user: User | null;
-  showAuthModal: boolean;
-  setShowAuthModal: (show: boolean) => void;
+interface AuthContextType {
+  user: { email: string } | null;
   login: (email: string, password: string) => void;
   guestLogin: () => void;
   logout: () => void;
-};
+  showAuthModal: boolean;
+  setShowAuthModal: (show: boolean) => void;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{ email: string } | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const login = (email: string, password: string) => {
-    setUser({ email, subscription: "Basic" });
-    setShowAuthModal(false);
+    if (email === "guest@gmail.com" && password === "guest123") {
+      setUser({ email });
+      setShowAuthModal(false);
+    } else {
+      alert("Invalid credentials");
+    }
   };
 
   const guestLogin = () => {
-    setUser({ email: "guest@gmail.com", subscription: "Basic" });
+    setUser({ email: "guest@gmail.com" });
     setShowAuthModal(false);
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider
-      value={{ user, showAuthModal, setShowAuthModal, login, guestLogin, logout }}
+      value={{ user, login, guestLogin, logout, showAuthModal, setShowAuthModal }}
     >
       {children}
     </AuthContext.Provider>
@@ -43,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  return ctx;
 };

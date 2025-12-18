@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Sidebar from "../../../components/Sidebar";
 import SkeletonCard from "../../../components/SkeletonCard";
 import { useAuth } from "../../../context/AuthContext";
@@ -16,6 +17,7 @@ type Book = {
 
 export default function ForYouPage() {
   const { user, setShowAuthModal } = useAuth();
+  const router = useRouter();
 
   const [selected, setSelected] = useState<Book | null>(null);
   const [recommended, setRecommended] = useState<Book[]>([]);
@@ -27,33 +29,23 @@ export default function ForYouPage() {
 
     const fetchData = async () => {
       try {
-        // Selected book
         const selectedRes = await fetch(
           "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected"
         );
         const selectedData = await selectedRes.json();
-        setSelected({
-          ...selectedData,
-          summary: selectedData.summary ?? "",
-        });
+        setSelected({ ...selectedData, summary: selectedData.summary ?? "" });
 
-        // Recommended books
         const recRes = await fetch(
           "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended"
         );
         const recData = await recRes.json();
-        setRecommended(
-          recData.map((b: any) => ({ ...b, summary: b.summary ?? "" }))
-        );
+        setRecommended(recData.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
 
-        // Suggested books
         const sugRes = await fetch(
           "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested"
         );
         const sugData = await sugRes.json();
-        setSuggested(
-          sugData.map((b: any) => ({ ...b, summary: b.summary ?? "" }))
-        );
+        setSuggested(sugData.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
       } catch (error) {
         console.error("Error loading books", error);
       } finally {
@@ -64,16 +56,16 @@ export default function ForYouPage() {
     fetchData();
   }, []);
 
-  const handleClick = (book: Book): void => {
+  const handleClick = (book: Book) => {
     if (!user) {
       setShowAuthModal(true);
       return;
     }
     if (book.subscriptionRequired && user.email !== "guest@gmail.com") {
-      window.location.href = "/choose-plan";
+      router.push("/choose-plan");
       return;
     }
-    window.location.href = `/player/${book.id}`;
+    router.push(`/book/${book.id}`);
   };
 
   const renderCard = (book: Book) => (
@@ -102,7 +94,6 @@ export default function ForYouPage() {
   return (
     <div className="flex pt-20">
       <Sidebar />
-
       <main className="flex-1 container-max mx-auto px-4 py-8 space-y-8">
         <h1 className="text-2xl font-bold">Selected Book</h1>
         {loading ? <SkeletonCard /> : selected && renderCard(selected)}
@@ -110,18 +101,14 @@ export default function ForYouPage() {
         <h2 className="text-2xl font-bold">Recommended Books</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {loading
-            ? Array(4)
-                .fill(0)
-                .map((_, i) => <SkeletonCard key={i} />)
+            ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
             : recommended.map(renderCard)}
         </div>
 
         <h2 className="text-2xl font-bold">Suggested Books</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {loading
-            ? Array(4)
-                .fill(0)
-                .map((_, i) => <SkeletonCard key={i} />)
+            ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
             : suggested.map(renderCard)}
         </div>
       </main>
