@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Sidebar from "../../../../components/Sidebar";
-import SkeletonCard from "../../../../components/SkeletonCard";
-import { useAuth } from "../../../../context/AuthContext";
+import Sidebar from "../../../components/Sidebar";
+import SkeletonCard from "../../../components/SkeletonCard";
+import { useAuth } from "../../../context/AuthContext";
 import { useParams } from "next/navigation";
 
 type Book = {
