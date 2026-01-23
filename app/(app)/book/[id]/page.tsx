@@ -24,9 +24,10 @@ async function getBook(id: string): Promise<Book> {
 export default async function BookPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const book = await getBook(params.id);
+  const { id } = await params; // Await params in Next.js 15
+  const book = await getBook(id);
 
   return (
     <div className="pt-24 px-6 max-w-5xl mx-auto">
