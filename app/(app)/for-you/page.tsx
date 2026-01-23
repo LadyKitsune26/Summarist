@@ -25,46 +25,35 @@ export default function ForYouPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-
-    const fetchData = async () => {
+    const fetchBooks = async () => {
+      setLoading(true);
       try {
-        const selectedRes = await fetch(
-          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected"
-        );
-        const selectedData = await selectedRes.json();
-        setSelected({ ...selectedData, summary: selectedData.summary ?? "" });
+        const [selRes, recRes, sugRes] = await Promise.all([
+          fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected"),
+          fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended"),
+          fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested"),
+        ]);
 
-        const recRes = await fetch(
-          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended"
-        );
-        const recData = await recRes.json();
-        setRecommended(recData.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
+        const sel = await selRes.json();
+        const rec = await recRes.json();
+        const sug = await sugRes.json();
 
-        const sugRes = await fetch(
-          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested"
-        );
-        const sugData = await sugRes.json();
-        setSuggested(sugData.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
-      } catch (error) {
-        console.error("Error loading books", error);
+        setSelected({ ...sel, summary: sel.summary ?? "" });
+        setRecommended(rec.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
+        setSuggested(sug.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
+      } catch (err) {
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchBooks();
   }, []);
 
   const handleClick = (book: Book) => {
-    if (!user) {
-      setShowAuthModal(true);
-      return;
-    }
-    if (book.subscriptionRequired && user.email !== "guest@gmail.com") {
-      router.push("/choose-plan");
-      return;
-    }
+    if (!user) return setShowAuthModal(true);
+    if (book.subscriptionRequired && user.email !== "guest@gmail.com") return router.push("/choose-plan");
     router.push(`/book/${book.id}`);
   };
 
@@ -74,11 +63,7 @@ export default function ForYouPage() {
       className="border rounded-lg overflow-hidden shadow hover:shadow-lg cursor-pointer"
       onClick={() => handleClick(book)}
     >
-      <img
-        src={book.imageLink}
-        alt={book.title}
-        className="w-full h-48 object-cover"
-      />
+      <img src={book.imageLink} alt={book.title} className="w-full h-48 object-cover" />
       <div className="p-4">
         <h3 className="font-semibold">{book.title}</h3>
         <p className="text-sm text-gray-600">{book.author}</p>
@@ -100,16 +85,12 @@ export default function ForYouPage() {
 
         <h2 className="text-2xl font-bold">Recommended Books</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {loading
-            ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
-            : recommended.map(renderCard)}
+          {loading ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />) : recommended.map(renderCard)}
         </div>
 
         <h2 className="text-2xl font-bold">Suggested Books</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {loading
-            ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
-            : suggested.map(renderCard)}
+          {loading ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />) : suggested.map(renderCard)}
         </div>
       </main>
     </div>

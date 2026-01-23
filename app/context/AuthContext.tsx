@@ -1,10 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
-type User = {
-  email: string;
-};
+type User = { email: string };
 
 type AuthContextType = {
   user: User | null;
@@ -12,17 +10,17 @@ type AuthContextType = {
   guestLogin: () => void;
   logout: () => void;
   showAuthModal: boolean;
-  setShowAuthModal: (show: boolean) => void;
+  setShowAuthModal: (value: boolean) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const login = (email: string, password: string) => {
-    // fake auth (Summarist-style)
+    // dummy login
     setUser({ email });
     setShowAuthModal(false);
   };
@@ -32,30 +30,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setShowAuthModal(false);
   };
 
-  const logout = () => {
-    setUser(null);
-  };
+  const logout = () => setUser(null);
 
   return (
     <AuthContext.Provider
-      value={{
-        user,
-        login,
-        guestLogin,
-        logout,
-        showAuthModal,
-        setShowAuthModal,
-      }}
+      value={{ user, login, guestLogin, logout, showAuthModal, setShowAuthModal }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-}
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  return ctx;
+};

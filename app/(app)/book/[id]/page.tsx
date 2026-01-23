@@ -1,4 +1,3 @@
-// app/book/[id]/page.tsx
 import Image from "next/image";
 
 type Book = {
@@ -14,13 +13,12 @@ async function getBook(id: string): Promise<Book | null> {
   try {
     const res = await fetch(
       `https://us-central1-summaristt.cloudfunctions.net/getBook?id=${id}`,
-      { cache: "no-store" } // always fresh data
+      { cache: "no-store" }
     );
     if (!res.ok) return null;
     const data = await res.json();
     return { ...data, summary: data.summary ?? "" };
-  } catch (err) {
-    console.error("Failed to fetch book", err);
+  } catch {
     return null;
   }
 }
