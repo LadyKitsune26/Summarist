@@ -1,5 +1,5 @@
-import Sidebar from "../components/Sidebar";
-import Nav from "../components/Nav";
+import Sidebar from "./Sidebar";
+import Nav from "./Nav";
 
 export default function AppLayout({
   children,

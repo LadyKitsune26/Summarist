@@ -1,8 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
-import Sidebar from "../../components/Sidebar";
-import AuthModal from "../../components/AuthModal";
+import Sidebar from "../components/Sidebar";
+import AuthModal from "../components/AuthModal";
 
 export default function LibraryLayout({ children }: { children: ReactNode }) {
   return (
