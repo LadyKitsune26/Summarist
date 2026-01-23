@@ -1,10 +1,11 @@
 "use client";
+
 import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export default function Nav() {
-  const { user, logout, setShowAuthModal } = useAuth();
+  const { user, logout, setShowAuthModal, guestLogin } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -14,9 +15,11 @@ export default function Nav() {
           Summarist
         </Link>
 
+        {/* Desktop menu */}
         <div className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
           <Link href="/for-you">For You</Link>
           <Link href="/library">Library</Link>
+
           {user ? (
             <button
               onClick={logout}
@@ -25,15 +28,24 @@ export default function Nav() {
               Logout
             </button>
           ) : (
-            <button
-              onClick={() => setShowAuthModal(true)}
-              className="px-4 py-2 rounded-md bg-gray-900 text-white hover:bg-gray-700"
-            >
-              Login
-            </button>
+            <>
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="px-4 py-2 rounded-md bg-gray-900 text-white hover:bg-gray-700"
+              >
+                Login
+              </button>
+              <button
+                onClick={guestLogin}
+                className="px-4 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-600"
+              >
+                Guest Login
+              </button>
+            </>
           )}
         </div>
 
+        {/* Mobile menu toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden text-gray-800"
@@ -42,24 +54,47 @@ export default function Nav() {
         </button>
       </div>
 
+      {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden border-t bg-white px-4 py-3 flex flex-col gap-3 text-gray-700 font-medium">
-          <Link href="/for-you" onClick={() => setMobileOpen(false)}>For You</Link>
-          <Link href="/library" onClick={() => setMobileOpen(false)}>Library</Link>
+          <Link href="/for-you" onClick={() => setMobileOpen(false)}>
+            For You
+          </Link>
+          <Link href="/library" onClick={() => setMobileOpen(false)}>
+            Library
+          </Link>
+
           {user ? (
             <button
-              onClick={() => { logout(); setMobileOpen(false); }}
+              onClick={() => {
+                logout();
+                setMobileOpen(false);
+              }}
               className="px-4 py-2 rounded-md bg-gray-900 text-white text-left"
             >
               Logout
             </button>
           ) : (
-            <button
-              onClick={() => { setShowAuthModal(true); setMobileOpen(false); }}
-              className="px-4 py-2 rounded-md bg-gray-900 text-white text-left"
-            >
-              Login
-            </button>
+            <>
+              <button
+                onClick={() => {
+                  setShowAuthModal(true);
+                  setMobileOpen(false);
+                }}
+                className="px-4 py-2 rounded-md bg-gray-900 text-white text-left"
+              >
+                Login
+              </button>
+              <button
+                onClick={() => {
+                  guestLogin();
+                  setMobileOpen(false);
+                }}
+                className="px-4 py-2 rounded-md bg-gray-700 text-white text-left"
+              >
+                Guest Login
+              </button>
+            </>
           )}
         </div>
       )}
