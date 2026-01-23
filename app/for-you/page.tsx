@@ -25,35 +25,42 @@ export default function ForYouPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      setLoading(true);
+    setLoading(true);
+
+    const fetchData = async () => {
       try {
-        const [selRes, recRes, sugRes] = await Promise.all([
-          fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected"),
-          fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended"),
-          fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested"),
-        ]);
+        const selectedRes = await fetch(
+          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected"
+        );
+        const selectedData = await selectedRes.json();
+        setSelected({ ...selectedData, summary: selectedData.summary ?? "" });
 
-        const sel = await selRes.json();
-        const rec = await recRes.json();
-        const sug = await sugRes.json();
+        const recRes = await fetch(
+          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended"
+        );
+        const recData = await recRes.json();
+        setRecommended(recData.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
 
-        setSelected({ ...sel, summary: sel.summary ?? "" });
-        setRecommended(rec.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
-        setSuggested(sug.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
-      } catch (err) {
-        console.error(err);
+        const sugRes = await fetch(
+          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested"
+        );
+        const sugData = await sugRes.json();
+        setSuggested(sugData.map((b: any) => ({ ...b, summary: b.summary ?? "" })));
+      } catch (error) {
+        console.error("Error loading books", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBooks();
+    fetchData();
   }, []);
 
   const handleClick = (book: Book) => {
     if (!user) return setShowAuthModal(true);
-    if (book.subscriptionRequired && user.email !== "guest@gmail.com") return router.push("/choose-plan");
+    if (book.subscriptionRequired && user.email !== "guest@gmail.com") {
+      return router.push("/choose-plan");
+    }
     router.push(`/book/${book.id}`);
   };
 
@@ -63,7 +70,11 @@ export default function ForYouPage() {
       className="border rounded-lg overflow-hidden shadow hover:shadow-lg cursor-pointer"
       onClick={() => handleClick(book)}
     >
-      <img src={book.imageLink} alt={book.title} className="w-full h-48 object-cover" />
+      <img
+        src={book.imageLink}
+        alt={book.title}
+        className="w-full h-48 object-cover"
+      />
       <div className="p-4">
         <h3 className="font-semibold">{book.title}</h3>
         <p className="text-sm text-gray-600">{book.author}</p>

@@ -1,3 +1,6 @@
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
 type Book = {
@@ -23,8 +26,13 @@ async function getBook(id: string): Promise<Book | null> {
   }
 }
 
-export default async function BookPage({ params }: { params: { id: string } }) {
-  const book = await getBook(params.id);
+export default async function BookPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> // Change type to Promise
+}) {
+  const { id } = await params; // Await params here
+  const book = await getBook(id); // Use the destructured id
 
   if (!book) {
     return <div className="pt-24 text-center text-gray-700">No book found</div>;
