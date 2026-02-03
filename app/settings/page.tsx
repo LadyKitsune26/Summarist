@@ -11,12 +11,22 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="flex pt-20">
+    <div className="flex bg-white text-black min-h-screen">
+      {/* Sidebar */}
       <Sidebar />
-      <main className="flex-1 container-max mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">Settings</h1>
-        <p>Email: {user.email}</p>
-        <p>Subscription: Basic</p>
+
+      {/* Main content */}
+      <main className="flex-1 ml-0 md:ml-64 p-8">
+        <h1 className="text-2xl font-bold mb-6">Settings</h1>
+
+        <div className="space-y-4">
+          <p className="text-lg">
+            <span className="font-semibold">Email:</span> {user.email}
+          </p>
+          <p className="text-lg">
+            <span className="font-semibold">Subscription:</span> Basic
+          </p>
+        </div>
       </main>
     </div>
   );

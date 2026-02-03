@@ -11,11 +11,13 @@
 body {
   max-width: 100%;
   overflow-x: hidden;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: #000000;
 }
 
 ul {
@@ -52,7 +54,7 @@ button:disabled {
 
 .btn {
   background-color: #2bd97c;
-  color: #032b41;
+  color: #000000;
   width: 100%;
   height: 40px;
   border-radius: 4px;
@@ -82,7 +84,7 @@ button:disabled {
 /* HOME */
 .section__title {
   font-size: 32px;
-  color: #032b41;
+  color: #000000;
   text-align: center;
   margin-bottom: 32px;
   font-weight: bold;
@@ -120,7 +122,7 @@ button:disabled {
 
 .nav__list {
   cursor: not-allowed;
-  color: #032b41;
+  color: #000000;
   transition: color 100ms;
 }
 
@@ -154,14 +156,14 @@ button:disabled {
 }
 
 .landing__content__title {
-  color: #032b41;
+  color: #000000;
   font-size: 40px;
   font-weight: bold;
   margin-bottom: 24px;
 }
 
 .landing__content__subtitle {
-  color: #394547;
+  color: #4b5563;
   font-size: 20px;
   font-weight: 300;
   margin-bottom: 24px;
@@ -187,7 +189,7 @@ button:disabled {
   display: flex;
   justify-content: center;
   margin-bottom: 8px;
-  color: #032b41;
+  color: #000000;
 }
 
 .features__icon svg {
@@ -197,14 +199,14 @@ button:disabled {
 
 .features__title {
   font-size: 24px;
-  color: #032b41;
+  color: #000000;
   margin-bottom: 16px;
   font-weight: 500;
 }
 
 .features__sub--title {
   font-size: 18px;
-  color: #394547;
+  color: #4b5563;
   font-weight: 300;
 }
 
@@ -250,7 +252,7 @@ button:disabled {
   flex-direction: column;
   justify-content: center;
   gap: 24px;
-  background-color: #f1f6f4;
+  background-color: #ffffff;
   padding: 40px 24px;
 }
 
@@ -269,7 +271,7 @@ button:disabled {
 .statistics__data--title {
   font-size: 20px;
   font-weight: 300;
-  color: #394547;
+  color: #4b5563;
 }
 
 /* REVIEWS */
@@ -279,7 +281,8 @@ button:disabled {
 }
 
 .review {
-  background-color: #fff3d7;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
   padding: 16px;
   margin-bottom: 32px;
   border-radius: 4px;
@@ -287,14 +290,14 @@ button:disabled {
 }
 
 .review__header {
-  color: #032b41;
+  color: #000000;
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
 }
 
 .review__body {
-  color: #394547;
+  color: #4b5563;
   letter-spacing: 0.3px;
   line-height: 1.4;
 }
@@ -316,7 +319,8 @@ button:disabled {
 
 /* NUMBERS */
 .numbers {
-  background-color: #d7e9ff;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -352,18 +356,19 @@ button:disabled {
 
 .numbers__title {
   font-size: 40px;
-  color: #032b41;
+  color: #000000;
   font-weight: 600;
   margin-bottom: 16px;
 }
 
 .numbers__sub--title {
-  color: #394547;
+  color: #4b5563;
   font-weight: 300;
 }
 
 #footer {
-  background-color: rgb(241 246 244);
+  background-color: #ffffff;
+  border-top: 1px solid #e5e5e5;
 }
 
 .footer__top--wrapper {
@@ -382,7 +387,7 @@ button:disabled {
   font-weight: 600;
   margin-bottom: 16px;
   font-size: 18px;
-  color: #032b41;
+  color: #000000;
 }
 
 .footer__social--link-wrapper {
@@ -402,7 +407,7 @@ button:disabled {
 }
 
 .footer__link {
-  color: #394547;
+  color: #4b5563;
   font-size: 14px;
   cursor: not-allowed;
 }
@@ -442,7 +447,7 @@ button:disabled {
 }
 
 .footer__copyright {
-  color: #032b41;
+  color: #000000;
   font-weight: 500;
 }
 
