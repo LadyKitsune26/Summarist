@@ -6,14 +6,14 @@ interface LandingProps {
 
 export default function Landing({ onPrimaryClick }: LandingProps) {
   return (
-    <div className="text-center py-20 space-y-6">
+    <div className="bg-white text-black text-center py-20 space-y-6 min-h-screen">
       <img
         src="/logo.png"
         alt="Summarist Hero"
         className="mx-auto w-full max-w-xl"
       />
 
-      <h1 className="text-4xl font-bold text-gray-900">
+      <h1 className="text-4xl font-bold text-black">
         Summarist
       </h1>
 

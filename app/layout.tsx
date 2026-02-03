@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import Sidebar from "./components/Sidebar";
 import { AuthProvider } from "./context/AuthContext";
+import AuthModal from "./components/AuthModal";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,11 +16,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <AuthProvider>
           <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-0 md:ml-64 p-6">{children}</main>
+            <main className="flex-1 ml-0 md:ml-64 p-6">
+              {children}
+              <AuthModal children={undefined} />
+            </main>
           </div>
         </AuthProvider>
       </body>
     </html>
   );
 }
+
 

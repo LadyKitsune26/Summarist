@@ -14,7 +14,7 @@ export default function LibraryLayout({ children }: { children: ReactNode }) {
         {children}
 
         {/* Auth modal renders here inline */}
-        <AuthModal />
+        <AuthModal children={undefined} />
       </main>
     </div>
   );
